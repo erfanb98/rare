@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جستجوی محصولات</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products.css">
+    <style>
+        /* Font Awesome for icons */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* --- Search Container Styles --- */
+        .search-container {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 600px;
+            margin: 20px auto;
+            position: relative;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            position: relative;
+            margin-left: 15px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 10px 45px 10px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        .filter-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+
+        .filter-icon:hover {
+            color: #007bff;
+        }
+
+        .filter-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            min-width: 280px;
+            z-index: 1001;
+            box-sizing: border-box;
+        }
+
+        .filter-menu.active {
+            display: block;
+        }
+
+        .filter-menu h4 {
+            margin: 0 0 15px 0;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .price-filter {
+            margin-bottom: 15px;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .price-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .apply-filters-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .apply-filters-button:hover {
+            background-color: #218838;
+        }
+
+        /* --- Search Button Styles --- */
+        .search-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Search Suggestions --- */
+        .search-suggestions {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-suggestions.active {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s ease;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+           padding: 20px;
+        }
+
+        .product-name {
+             font-size: 1.4em;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .product-code {
+             font-size: 0.95em;
+            background: #eee;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: inline-block;
+            color: #555;
+        }
+
+        .product-price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--accent-pink); /* رنگ صورتی برای قیمت */
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+           font-size: 0.95em;
+            color:rgb(43, 48, 54);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            /* نمایش حداکثر 3 خط با ... */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .details-button {
+            display: block; /* برای اینکه دکمه عرض کامل بگیرد */
+            width: 100%;
+            padding: 12px 20px;
+            background-color: var(--secondary-blue); /* رنگ آبی */
+            color: white;
+            border: none;
+            border-radius: 30px; /* شکل کپسولی */
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-decoration: none; /* حذف خط زیر لینک */
+        }
+
+        .details-button:hover {
+             background-color: #1976d2; /* آبی تیره‌تر */
+            transform: translateY(-3px);
+        }
+
+        .no-results {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-top: 50px;
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .search-container {
+                width: 95%;
+                max-width: 100%;
+                padding: 10px;
+                flex-wrap: nowrap;
+            }
+
+            .search-box {
+                width: 78%;
+                position: relative;
+            }
+
+            .search-input {
+                font-size: clamp(12px, 3vw, 16px);
+                padding: 10px 40px 10px 15px;
+            }
+
+            .filter-icon {
+                font-size: clamp(16px, 4vw, 20px);
+                right: 12px;
+                display: block;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 1;
+            }
+
+            .search-button {
+                width: 20%;
+                font-size: clamp(12px, 3vw, 16px);
+                padding: 10px;
+            }
+
+            .filter-menu {
+                width: calc(100% - 20px);
+                right: 10px;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-container {
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .search-box {
+                width: 72%;
+                position: relative;
+            }
+
+            .search-input {
+                padding: 10px 40px 10px 15px;
+                width: 100%;
+            }
+
+            .filter-icon {
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .search-button {
+                width: 25%;
+                font-size: clamp(11px, 3vw, 14px);
+                padding: 10px 5px;
+            }
+
+            .filter-menu {
+                right: 5px;
+                left: 5px;
+                width: auto;
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="site-container">
+
+        <!-- ===== Header (بدون تغییر) ===== -->
+        <header class="main-header">
+            <div class="header-left">
+                <div class="hamburger-menu">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+
+                        <li class="has-submenu menu-item-has-arrow">
+                            <a href="#products-section">
+                                محصولات
+                                <span class="submenu-arrow">▼</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="productswatch.html">ساعت</a></li>
+                                <li><a href="productsbracelet.html">دستبند</a></li>
+                                <li><a href="productsnecklace.html">گردنبند</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html">سوالات متداول </a></li>
+                    </ul>
+                </nav>
+            </div>
+
+                        <div class="header-right">
+                <!-- لوگوی سایت -->
+                <div class="logo-container">
+                    <span class="logo-part2">Action</span><span class="logo-part1">Rare</span>
+                </div>
+                <!-- عکس پروفایل (پیج) -->
+                <div class="profile-picture-container">
+                    <img src="images/RareAction.jpg" alt= "عکس پروفایل" class="profile-picture">
+                </div>
+            </div>
+        </header>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="جستجو در بین محصولات...">
+            <i class="fas fa-filter filter-icon" id="filterIcon"></i>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+        </div>
+        <button id="searchButton" class="search-button">جستجو</button>
+
+        <div class="filter-menu" id="filterMenu">
+            <h4>فیلتر قیمت</h4>
+            <div class="price-filter">
+                <input type="range" id="priceRange" class="price-range-slider" min="0" max="5000000" step="50000" value="5000000">
+                <div class="price-values">
+                    <span id="minPrice">0</span> تومان - <span id="maxPrice">5,000,000</span> تومان
+                </div>
+            </div>
+            <button class="apply-filters-button" id="applyFiltersBtn">اعمال فیلتر</button>
+        </div>
+    </div>
+
+    <div class="products-grid" id="productsGrid"></div>
+    <div class="no-results" id="noResultsMessage">موردی یافت نشد.</div>
+
+     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const searchSuggestions = document.getElementById('searchSuggestions');
+            const productsGrid = document.getElementById('productsGrid');
+            const filterIcon = document.getElementById('filterIcon');
+            const filterMenu = document.getElementById('filterMenu');
+            const priceRange = document.getElementById('priceRange');
+            const minPriceDisplay = document.getElementById('minPrice');
+            const maxPriceDisplay = document.getElementById('maxPrice');
+            const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+
+            let allProducts = [];
+            let currentSearchTerm = '';
+            let currentMaxPrice = 5000000;
+
+            function formatPrice(price) {
+                return String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            function parsePersianPrice(priceString) {
+                if (!priceString) return 0;
+                const cleaned = priceString.replace(/[^\d]/g, '');
+                return parseInt(cleaned, 10) || 0;
+            }
+
+            function displayProducts(products) {
+                productsGrid.innerHTML = '';
+                if (products.length === 0) {
+                    noResultsMessage.style.display = 'block';
+                    return;
+                }
+                
+                noResultsMessage.style.display = 'none';
+                products.forEach((product, index) => {
+                    const priceNumeric = parsePersianPrice(product.price);
+                    if (priceNumeric <= currentMaxPrice) {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'product-card';
+                        productCard.style.animationDelay = (index * 0.05) + 's';
+                        
+                        productCard.innerHTML = `
+                            <img src="${product.image_urls?.[0] || 'https://via.placeholder.com/300x200?text=No+Image'}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                            <div class="product-info">
+                                <h3 class="product-name">${product.name}</h3>
+                                <span class="product-code">کد: ${product.product_code}</span>
+                                <p class="product-price">${product.price}</p>
+                                <p class="product-description">${product.description.substring(0, 100)}${product.description.length > 100 ? '...' : ''}</p>
+                                <a href="watches.html?id=${product.id}" class="details-button">مشاهده جزئیات</a>
+                            </div>
+                        `;
+                        productsGrid.appendChild(productCard);
+                    }
+                });
+                
+                if (productsGrid.children.length === 0) {
+                    noResultsMessage.style.display = 'block';
+                }
+            }
+
+            // Fetch Products
+            fetch('products.json')
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    allProducts = data;
+                    
+                    // Add sample product if needed
+                    const casioExample = {
+                        "id": "Casio",
+                        "name": "ساعت Casio",
+                        "price": "1,000,000 تومان",
+                        "description": "یک ساعت کلاسیک با طراحی مینیمال و بند چرمی باکیفیت. مناسب برای مجالس رسمی و روزمره.",
+                        "image_urls": ["images/Casio.jpg"],
+                        "product_code": "RA-005",
+                        "keywords": ["کاسیو", "ساعت", "کلاسیک", "مینیمال", "چرمی"]
+                    };
+                    
+                    if (!allProducts.some(p => p.id === casioExample.id)) {
+                        allProducts.unshift(casioExample);
+                    }
+                    
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const initialQuery = urlParams.get('q');
+                    if (initialQuery) {
+                        searchInput.value = initialQuery;
+                        currentSearchTerm = initialQuery.toLowerCase();
+                        filterAndDisplayProducts();
+                    } else {
+                        displayProducts(allProducts);
+                    }
+                })
+                .catch(error => {
+                    console.error("Could not load products:", error);
+                    productsGrid.innerHTML = '<p style="color: red; text-align: center;">خطا در بارگذاری محصولات. لطفاً فایل products.json را بررسی کنید.</p>';
+                });
+
+            function performSearch(term) {
+                currentSearchTerm = term.toLowerCase();
+                filterAndDisplayProducts();
+                
+                const url = new URL(window.location);
+                if (term) {
+                    url.searchParams.set('q', term);
+                } else {
+                    url.searchParams.delete('q');
+                }
+                window.history.pushState({}, '', url);
+            }
+
+            // Search input events
+            searchInput.addEventListener('input', () => {
+                const term = searchInput.value.trim();
+                if (term.length >= 2) {
+                    const suggestions = generateSuggestions(term);
+                    displaySuggestions(suggestions);
+                } else {
+                    searchSuggestions.classList.remove('active');
+                }
+            });
+
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const term = searchInput.value.trim();
+                    performSearch(term);
+                    searchSuggestions.classList.remove('active');
+                }
+            });
+
+            searchButton.addEventListener('click', () => {
+                const term = searchInput.value.trim();
+                performSearch(term);
+                searchSuggestions.classList.remove('active');
+            });
+
+            function generateSuggestions(term) {
+                const uniqueSuggestions = new Set();
+                const lowerCaseTerm = term.toLowerCase();
+
+                allProducts.forEach(product => {
+                    if (product.name.toLowerCase().includes(lowerCaseTerm)) {
+                        uniqueSuggestions.add(product.name);
+                    }
+                    if (product.product_code.toLowerCase().includes(lowerCaseTerm)) {
+                        uniqueSuggestions.add(`کد: ${product.product_code}`);
+                    }
+                    if (product.keywords) {
+                        product.keywords.forEach(keyword => {
+                            if (keyword.toLowerCase().includes(lowerCaseTerm)) {
+                                uniqueSuggestions.add(keyword);
+                            }
+                        });
+                    }
+                });
+                return Array.from(uniqueSuggestions).slice(0, 7);
+            }
+
+            function displaySuggestions(suggestions) {
+                searchSuggestions.innerHTML = '';
+                if (suggestions.length > 0) {
+                    suggestions.forEach(suggestion => {
+                        const item = document.createElement('div');
+                        item.className = 'suggestion-item';
+                        item.textContent = suggestion;
+                        item.addEventListener('click', () => {
+                            searchInput.value = suggestion;
+                            searchSuggestions.classList.remove('active');
+                            performSearch(suggestion);
+                        });
+                        searchSuggestions.appendChild(item);
+                    });
+                    searchSuggestions.classList.add('active');
+                } else {
+                    searchSuggestions.classList.remove('active');
+                }
+            }
+
+            // Close suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!searchSuggestions.contains(e.target) && !searchInput.contains(e.target)) {
+                    searchSuggestions.classList.remove('active');
+                }
+                if (!filterMenu.contains(e.target) && !filterIcon.contains(e.target)) {
+                    filterMenu.classList.remove('active');
+                }
+            });
+
+            // Filter functionality
+            filterIcon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterMenu.classList.toggle('active');
+            });
+
+            priceRange.addEventListener('input', (e) => {
+                currentMaxPrice = parseInt(e.target.value, 10);
+                minPriceDisplay.textContent = formatPrice(0);
+                maxPriceDisplay.textContent = formatPrice(currentMaxPrice);
+            });
+
+            applyFiltersBtn.addEventListener('click', () => {
+                filterAndDisplayProducts();
+                filterMenu.classList.remove('active');
+            });
+
+            function filterAndDisplayProducts() {
+                if (allProducts.length === 0) return;
+                
+                const filteredProducts = allProducts.filter(product => {
+                    const searchTermMatch = currentSearchTerm === '' || 
+                        product.name.toLowerCase().includes(currentSearchTerm) ||
+                        product.product_code.toLowerCase().includes(currentSearchTerm) ||
+                        (product.keywords && product.keywords.some(k => k.toLowerCase().includes(currentSearchTerm)));
+
+                    const priceNumeric = parsePersianPrice(product.price);
+                    const priceMatch = priceNumeric <= currentMaxPrice;
+
+                    return searchTermMatch && priceMatch;
+                });
+                displayProducts(filteredProducts);
+            }
+
+            // Initial filter setup
+            filterAndDisplayProducts();
+        });
+    </script>
+</body>
+</html>
