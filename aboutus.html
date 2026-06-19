@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rare Action - درباره ما</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- فونت وزیر -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- استایل‌های اختصاصی بخش درباره ما --- */
+        .about-us-section {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* ترکیب آبی و بنفش */
+            color: white;
+            padding: 50px 20px; /* فاصله از بالا/پایین و طرفین */
+            margin-top: 30px; /* فاصله با بخش قبلی */
+            margin-bottom: 30px; /* فاصله با فوتر */
+            border-radius: 12px; /* گوشه‌های گرد */
+            text-align: center;
+            position: relative;
+            overflow: hidden; /* برای اطمینان از اینکه عناصر داخل کادر می‌مانند */
+        }
+
+        .about-us-section::before { /* افکت گرادیان اضافی یا طرح */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1); /* لایه شفاف سفید */
+            z-index: 1;
+            border-radius: 12px;
+        }
+
+        .about-us-content {
+            position: relative;
+            z-index: 2; /* اطمینان از اینکه متن روی افکت گرادیان قرار می‌گیرد */
+            max-width: 800px; /* حداکثر عرض برای خوانایی بهتر متن */
+            margin: 0 auto;
+        }
+
+        .about-us-content h2 {
+            font-size: 2.5em; /* اندازه بزرگتر برای عنوان */
+            margin-bottom: 20px;
+            font-weight: 700; /* وزن فونت */
+            color:#fff
+        }
+
+        .about-us-text {
+            font-size: 1.1em; /* اندازه فونت متن */
+            line-height: 1.7; /* فاصله بین خطوط */
+            margin-bottom: 30px; /* فاصله تا لینک‌ها */
+            animation: fadeInFromTop 1s ease-out forwards; /* انیمیشن ورود */
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* اجازه می‌دهد لینک‌ها در صورت کمبود فضا به خط بعدی بروند */
+            gap: 15px; /* فاصله بین دکمه‌ها */
+        }
+
+        .social-link-button {
+            display: inline-flex; /* استفاده از فلکس برای تراز کردن لوگو و متن */
+            align-items: center;
+            padding: 12px 25px; /* اندازه دکمه */
+            border-radius: 30px; /* شکل کپسولی */
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* سایه ملایم */
+            border: 2px solid transparent; /* حاشیه شفاف اولیه */
+        }
+
+        /* --- استایل لوگوها و رنگ دکمه‌ها --- */
+
+        /* روبیکا */
+        .rubika-link { background-color: #e64a19; color: white; }
+        .rubika-link img { background-color: white; border-radius: 50%; margin-left: 10px; padding: 3px; width: 24px; height: 24px;}
+        .rubika-link:hover { background-color: #c63f17; box-shadow: 0 6px 20px rgba(230, 74, 25, 0.4); transform: translateY(-3px); border-color: white;}
+
+        /* تلگرام */
+        .telegram-link { background-color: #0088cc; color: white; }
+        .telegram-link img { width: 24px; height: 24px; margin-left: 10px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.5)); } /* فیلتر برای حفظ شفافیت لوگو */
+        .telegram-link:hover { background-color: #0077b3; box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4); transform: translateY(-3px); border-color: #0088cc;}
+
+        /* اینستاگرام */
+        .instagram-link {
+            background: radial-gradient(circle farthest-corner at 35% 90%, #fec564, transparent 50%), radial-gradient(circle farthest-corner at 10% 15%, #fec564, transparent 50%), radial-gradient(circle farthest-corner at 80% 5%, #fec564, transparent 50%), radial-gradient(circle farthest-corner at 70% 40%, #fec564, transparent 50%), radial-gradient(circle farthest-corner at 100% 60%, #fec564, transparent 50%), radial-gradient(circle farthest-corner at 60% 80%, #fec564, transparent 50%), radial-gradient(circle farthest-corner at 75% 20%, #fec564, transparent 50%), radial-gradient(circle farthest-corner at 30% 60%, #fec564, transparent 50%), linear-gradient(#f09433 0%, #e6683c 25%, #dc2743 60%, #cc2366 75%, #bc1888 90%, #b4179c 100%);
+            color: white;
+        }
+        .instagram-link img { width: 24px; height: 24px; margin-left: 10px; filter: brightness(0) invert(1); } /* برای سفید کردن لوگو */
+        .instagram-link:hover { box-shadow: 0 6px 20px rgba(180, 24, 156, 0.4); transform: translateY(-3px); border-color: white; }
+
+
+        /* تیک تاک */
+        .tiktok-link { background-color: #000000; color: white; }
+        .tiktok-link img { width: 24px; height: 24px; margin-left: 10px; filter: drop-shadow(0 0 2px white); }
+        .tiktok-link:hover { background-color: #222222; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); transform: translateY(-3px); border-color: white;}
+
+        /* --- اتمام استایل‌های اختصاصی بخش درباره ما --- */
+
+    </style>
+</head>
+
+<body>
+    <div class="site-container">
+
+        <!-- ===== Header (بدون تغییر) ===== -->
+        <header class="main-header">
+            <div class="header-left">
+                <div class="hamburger-menu">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+
+                        <li class="has-submenu menu-item-has-arrow">
+                            <a href="#products-section">
+                                محصولات
+                                <span class="submenu-arrow">▼</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="productswatch.html">ساعت</a></li>
+                                <li><a href="productsbracelet.html">دستبند</a></li>
+                                <li><a href="productsnecklace.html">گردنبند</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html">سوالات متداول </a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="header-center">
+    <div class="universal-search-container">
+        <input type="text" id="universalSearchInput" class="universal-search-input" placeholder="جستجو در محصولات...">
+        <div id="universalSearchSuggestions" class="universal-search-suggestions"></div>
+        <button id="universalSearchButton" class="universal-search-button">جستجو</button>
+    </div>
+</div>
+                        <div class="header-right">
+                <!-- لوگوی سایت -->
+                <div class="logo-container">
+                    <span class="logo-part2">Action</span><span class="logo-part1">Rare</span>
+                </div>
+                <!-- عکس پروفایل (پیج) -->
+                <div class="profile-picture-container">
+                    <img src="images/RareAction.jpg" alt= "عکس پروفایل" class="profile-picture">
+                </div>
+            </div>
+        </header>
+
+        <!-- بخش درباره ما -->
+            <section class="about-us-section">
+                <div class="about-us-content">
+                    <h2>درباره Rare Action</h2>
+                    <p class="about-us-text">
+                        Rare Action جایی است که خاص بودن معنا پیدا می‌کند. ما مجموعه‌ای منتخب از اکسسوری‌های منحصر به فرد را گرد هم آورده‌ایم تا سبک شخصی شما را بازتاب دهیم. از ساعت‌های کلاسیک گرفته تا دستبندها و گردنبندهای مدرن، هر قطعه داستانی برای گفتن دارد. هدف ما ارائه محصولاتی است که نه تنها زیبا، بلکه بیانگر شخصیت و روحیه شما باشند. با Rare Action، اکسسوری‌هایتان را فراتر از یک انتخاب، به بخشی از هویت خود تبدیل کنید.
+                    </p>
+                    <div class="social-links">
+                        <!-- لینک روبیکا -->
+                        <a href="https://rubika.ir" target="_blank" class="social-link-button rubika-link">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Rubika_logo.svg/24px-Rubika_logo.svg.png" alt="لوگو روبیکا">
+                            روبیکا
+                        </a>
+                        <!-- لینک تلگرام -->
+                        <a href="https://t.me" target="_blank" class="social-link-button telegram-link">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Telegram_logo.svg/24px-Telegram_logo.svg.png" alt="لوگو تلگرام">
+                            تلگرام
+                        </a>
+                        <!-- لینک اینستاگرام -->
+                        <a href="https://instagram.com" target="_blank" class="social-link-button instagram-link">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Instagram_icon.png/24px-Instagram_icon.png" alt="لوگو اینستاگرام">
+                            اینستاگرام
+                        </a>
+                        <!-- لینک تیک تاک -->
+                        <a href="https://tiktok.com" target="_blank" class="social-link-button tiktok-link">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f9/TikTok_logo.svg/24px-TikTok_logo.svg.png" alt="لوگو تیک تاک">
+                            تیک تاک
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <!-- پایان بخش درباره ما -->
+
+        <!-- ===== Footer (بدون تغییر) ===== -->
+        <footer class="main-footer">
+            <div class="footer-top-bar"></div>
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>درباره ما</h3>
+                    <p>Rare Action مجموعه‌ای از اکسسوری‌های خاص و منحصر به فرد.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>لینک‌های مفید</h3>
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <li><a href="index.html#explore-by-interest">محصولات</a></li>
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html#faq-section">سوالات متداول </a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>تماس با ما</h3>
+                    <p>ایمیل: info@rareaction.com</p>
+                    <p>تلفن: 021-12345678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Rare Action. تمامی حقوق محفوظ است.
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
