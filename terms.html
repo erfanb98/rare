@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قوانین و مقررات و سوالات متداول</title>
+    <link rel="stylesheet" href="style.css"> <!-- لینک به فایل CSS اصلی شما -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- آیکون‌ها -->
+    <style>
+        /* --- استایل‌های اختصاصی صفحه قوانین و سوالات متداول --- */
+
+        :root {
+            --accent-pink: #e91e63;
+            --primary-purple: #673ab7;
+            -a-secondary-blue: #2196f3;
+            -a-text-light: #555;
+            --text-dark: #333;
+            --background-light: #f4f7f6;
+            --shadow-light: rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+
+        .page-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-purple);
+        }
+
+        .page-header h1 {
+            font-size: 2.8em;
+            color: var(--primary-purple);
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .page-header p {
+            font-size: 1.1em;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* --- استایل‌های بخش قوانین و مقررات --- */
+        .terms-section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background-color: var(--background-light);
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+
+        .terms-section h2 {
+            font-size: 1.8em;
+            color: var(--secondary-blue);
+            margin-bottom: 25px;
+            border-bottom: 2px dashed var(-a-secondary-blue);
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .terms-section ul {
+            list-style: none;
+            padding-right: 0;
+            margin-bottom: 20px;
+        }
+
+        .terms-section ul li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-right: 30px; /* فضا برای آیکون */
+            font-size: 1.05em;
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        .terms-section ul li::before {
+            content: '\f058'; /* آیکون دایره پر */
+            font-family: 'Font Awesome 6 Free'; /* یا هر فونتی که آیکون دارد */
+            font-weight: 900; /* وزن فونت برای آیکون‌های پر */
+            color: var(--accent-pink);
+            position: absolute;
+            right: 0;
+            top: 5px; /* تنظیم موقعیت عمودی */
+            font-size: 1em;
+        }
+
+        .terms-section ol {
+            padding-right: 20px;
+            margin-bottom: 20px;
+        }
+
+        .terms-section ol li {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        .terms-section p {
+            font-size: 1.05em;
+            color: var(-a-text-light);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- استایل‌های بخش سوالات متداول (FAQ) --- */
+        .faq-section {
+            margin-top: 50px;
+        }
+
+        .faq-section h2 {
+            font-size: 1.8em;
+            color: var(-a-secondary-blue);
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px dashed var(-a-secondary-blue);
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .faq-item {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden; /* برای اینکه محتوا بیرون نزند */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: box-shadow var(--transition-speed) ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            background-color: #fdfdfd; /* کمی تیره‌تر از پس‌زمینه اصلی */
+            padding: 18px 25px;
+            font-size: 1.2em;
+            color: var(--text-dark);
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color var(--transition-speed) ease;
+        }
+        .faq-question:hover {
+            background-color: #f5f5f5;
+        }
+
+        .faq-question i {
+            font-size: 1.1em;
+            color: var(--primary-purple);
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg); /* چرخش آیکون هنگام باز بودن */
+        }
+        .faq-item.active .faq-question {
+             background-color: #f0f0f0; /* تغییر رنگ پس‌زمینه وقتی باز است */
+        }
+
+        .faq-answer {
+            max-height: 0; /* در ابتدا مخفی */
+            overflow: hidden;
+            transition: max-height var(--transition-speed) ease-out, padding var(--transition-speed) ease-out;
+            font-size: 1.05em;
+            color: var(--text-light);
+            line-height: 1.7;
+            padding: 0 25px; /* padding عمودی صفر در ابتدا */
+            background-color: white; /* پس‌زمینه سفید برای جواب */
+        }
+
+        .faq-answer p {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px; /* ارتفاع حداکثر (باید تنظیم شود یا از JS استفاده کرد) */
+            padding: 20px 25px; /* padding عمودی بعد از باز شدن */
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2em; }
+            .terms-section h2, .faq-section h2 { font-size: 1.6em; }
+            .faq-question { font-size: 1.1em; }
+            .faq-answer { font-size: 1em; }
+            .terms-section ul li, .terms-section ol li, .terms-section p { font-size: 1em; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="site-container">
+
+        <!-- ===== Header (بدون تغییر) ===== -->
+        <header class="main-header">
+            <div class="header-left">
+                <div class="hamburger-menu">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+
+                        <li class="has-submenu menu-item-has-arrow">
+                            <a href="#products-section">
+                                محصولات
+                                <span class="submenu-arrow">▼</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="productswatch.html">ساعت</a></li>
+                                <li><a href="productsbracelet.html">دستبند</a></li>
+                                <li><a href="productsnecklace.html">گردنبند</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html">سوالات متداول </a></li>
+                    </ul>
+                </nav>
+            </div>
+
+         <div class="header-center">
+    <div class="universal-search-container">
+        <input type="text" id="universalSearchInput" class="universal-search-input" placeholder="جستجو در محصولات...">
+        <div id="universalSearchSuggestions" class="universal-search-suggestions"></div>
+        <button id="universalSearchButton" class="universal-search-button">جستجو</button>
+    </div>
+</div>
+                        <div class="header-right">
+                <!-- لوگوی سایت -->
+                <div class="logo-container">
+                    <span class="logo-part2">Action</span><span class="logo-part1">Rare</span>
+                </div>
+                <!-- عکس پروفایل (پیج) -->
+                <div class="profile-picture-container">
+                    <img src="images/RareAction.jpg" alt= "عکس پروفایل" class="profile-picture">
+                </div>
+            </div>
+        </header>
+
+    <div class="page-container">
+
+        <!-- هدر صفحه -->
+        <header class="page-header">
+            <h1>قوانین و مقررات</h1>
+            <p>لطفاً پیش از استفاده از خدمات ما، قوانین و مقررات را به دقت مطالعه فرمایید.</p>
+        </header>
+
+        <!-- بخش قوانین و مقررات -->
+        <section class="terms-section">
+            <h2>مقدمه</h2>
+            <p>
+                به وب‌سایت [نام وب‌سایت شما] خوش آمدید. استفاده شما از این وب‌سایت و خدمات آن منوط به پذیرش تمامی قوانین و مقررات ذکر شده در این صفحه است. در صورتی که با هر یک از این شرایط موافق نیستید، لطفاً از ادامه استفاده خودداری نمایید.
+            </p>
+
+            <h2>ماده ۱: شرایط عمومی</h2>
+            <ul>
+                <li>کاربران باید هنگام ثبت‌نام اطلاعات صحیح و به‌روز ارائه دهند.</li>
+                <li>مسئولیت حفظ اطلاعات حساب کاربری (نام کاربری و رمز عبور) بر عهده کاربر است.</li>
+                <li>هرگونه فعالیت غیرقانونی یا سوء استفاده از خدمات وب‌سایت ممنوع است.</li>
+            </ul>
+
+            <h2>ماده ۲: حریم خصوصی</h2>
+            <p>
+                ما به حریم خصوصی کاربران خود احترام می‌گذاریم. اطلاعات شخصی شما تنها با رضایت خودتان یا طبق قوانین جمع‌آوری و استفاده خواهد شد. برای اطلاعات بیشتر، لطفاً به صفحه "سیاست حفظ حریم خصوصی" مراجعه فرمایید.
+            </p>
+
+            <h2>ماده ۳: مالکیت معنوی</h2>
+            <p>
+                تمامی محتوا، طرح‌ها، لوگوها و کدهای موجود در این وب‌سایت متعلق به [نام وب‌سایت شما] است و هرگونه کپی‌برداری یا استفاده غیرمجاز پیگرد قانونی دارد.
+            </p>
+
+            <h2>ماده ۴: نحوه استفاده از خدمات</h2>
+            <ol>
+                <li>سفارش کالا از طریق وب‌سایت پس از تایید نهایی سفارش و پرداخت مبلغ آن امکان‌پذیر است.</li>
+                <li>شرایط بازگشت کالا و گارانتی مطابق با سیاست‌های اعلام شده در وب‌سایت خواهد بود.</li>
+                <li>ممکن است در برخی موارد، به دلیل خطای فنی یا اتمام موجودی، امکان پردازش سفارش وجود نداشته باشد که در این صورت مراتب به اطلاع کاربر رسانده خواهد شد.</li>
+            </ol>
+
+            <h2>ماده ۵: تغییرات در قوانین</h2>
+            <p>
+                ما حق داریم در هر زمان نسبت به بازنگری و اعمال تغییرات در این قوانین و مقررات اقدام نماییم. تغییرات از زمان انتشار در وب‌سایت لازم‌الاجرا خواهند بود.
+            </p>
+        </section>
+
+        <!-- بخش سوالات متداول -->
+        <section class="faq-section">
+            <h2>سوالات متداول</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>چگونه می‌توانم ثبت نام کنم؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>برای ثبت نام، کافی است روی دکمه "ثبت نام" در بالای صفحه کلیک کرده و فرم مربوطه را با اطلاعات دقیق خود تکمیل نمایید.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>فرآیند خرید چگونه است؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>پس از انتخاب محصول مورد نظر و افزودن آن به سبد خرید، به صفحه تسویه حساب رفته و با انتخاب روش پرداخت و تکمیل اطلاعات، سفارش خود را نهایی کنید.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>شرایط بازگشت کالا چیست؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>شما ۷ روز فرصت دارید تا در صورت عدم رضایت یا وجود مشکل در کالا، درخواست بازگشت کالا را ثبت نمایید. جزئیات کامل در صفحه "شرایط بازگشت کالا" ذکر شده است.</p>
+                </div>
+            </div>
+
+             <div class="faq-item">
+                <div class="faq-question">
+                    <span>چگونه می‌توانم وضعیت سفارش خود را پیگیری کنم؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>پس از ورود به حساب کاربری خود، به بخش "سفارشات من" مراجعه کنید. در آنجا می‌توانید آخرین وضعیت سفارش و اطلاعات پیگیری مرسوله را مشاهده نمایید.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>آیا امکان خرید حضوری وجود دارد؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>در حال حاضر فروشگاه ما به صورت آنلاین فعالیت می‌کند و امکان خرید حضوری وجود ندارد. تمامی سفارشات از طریق وب‌سایت ثبت و ارسال می‌شوند.</p>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+   <!-- بخش فوتر -->
+        <footer class="main-footer">
+            <div class="footer-top-bar"></div> <!-- نوار بنفش بالای فوتر -->
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>درباره ما</h3>
+                    <p>Rare Action مجموعه‌ای از اکسسوری‌های خاص و منحصر به فرد.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>لینک‌های مفید</h3>
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <li><a href="index.html#explore-by-interest">محصولات</a></li>
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html#faq-section">سوالات متداول </a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>تماس با ما</h3>
+                    <p>ایمیل: info@rareaction.com</p>
+                    <p>تلفن: 021-12345678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Rare Action. تمامی حقوق محفوظ است.
+            </div>
+        </footer>
+    </div> 
+
+    <script src="script.js"></script>
+    <script>
+        // --- جاوا اسکریپت برای بخش سوالات متداول ---
+            document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            const faqAnswerElements = document.querySelectorAll('.faq-answer'); // همه عناصر پاسخ
+
+            // تابع برای بستن تمام سوالات
+              const closeAllFaqAnswers = () => {
+                faqItems.forEach(item => {
+                    item.classList.remove('open');
+                    const answer = item.querySelector('.faq-answer');
+                    if (answer) { // اطمینان از وجود عنصر پاسخ
+                       answer.style.maxHeight = '0';
+                       // اگر padding را به صورت ثابت تنظیم کرده‌اید، آن را اینجا نیز صفر کنید
+                       // // answer.style.padding = '0 25px'; // این خط را بر اساس CSS شما تنظیم کنید
+                       }
+                       const icon = item.querySelector('.faq-icon');
+                       if (icon) { // اطمینان از وجود آیکون
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            };
+
+    // تنظیم max-height اولیه برای اطمینان از اینکه در صورت باز بودن صفحه، سوالات بسته باشند
+    faqAnswerElements.forEach(answerElement => {
+        // اگر عنصر در حال حاضر باز نیست (کلاس 'open' ندارد)، ارتفاع آن را صفر کن
+        if (!answerElement.closest('.faq-item').classList.contains('open')) {
+            answerElement.style.maxHeight = '0';
+            // اگر padding را به صورت ثابت تنظیم کرده‌اید، آن را اینجا نیز صفر کنید
+            // answerElement.style.padding = '0 25px'; // این خط را بر اساس CSS شما تنظیم کنید
+        }
+    });
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.faq-icon');
+
+        question.addEventListener('click', () => {
+            const isOpen = item.classList.contains('open');
+
+            // بستن تمام سوالات باز قبل از باز کردن سوال جدید (اختیاری، اما برای جلوگیری از همپوشانی توصیه می‌شود)
+            // اگر نمی‌خواهید همزمان چند سوال باز بمانند، این بخش را فعال کنید
+            // faqItems.forEach(otherItem => {
+            //     if (otherItem !== item && otherItem.classList.contains('open')) {
+            //         otherItem.classList.remove('open');
+            //         const otherAnswer = otherItem.querySelector('.faq-answer');
+            //         otherAnswer.style.maxHeight = '0';
+            //         // otherAnswer.style.padding = '0 25px'; // تنظیم padding عمودی صفر
+            //         otherItem.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+            //     }
+            // });
+
+            if (isOpen) {
+                // بستن سوال فعلی
+                item.classList.remove('open');
+                answer.style.maxHeight = '0';
+                // answer.style.padding = '0 25px'; // تنظیم padding عمودی صفر
+            } else {
+                // باز کردن سوال فعلی
+                item.classList.add('open');
+                // تنظیم max-height بر اساس ارتفاع واقعی محتوا
+                // مطمئن شوید که padding عمودی در اینجا به درستی تنظیم شده است
+                // اگر padding عمودی در CSS شما برای حالت باز شدن 20px است، اینجا از همان استفاده کنید.
+                // answer.style.padding = '20px 25px'; // این را بر اساس CSS خود تنظیم کنید
+                answer.style.maxHeight = answer.scrollHeight + 'px'; // scrollHeight ارتفاع محتوای واقعی است
+                if (icon) { // اطمینان از وجود آیکون
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            }
+        });
+    });
+
+    // --- قسمت جدید: مدیریت تغییر اندازه پنجره ---
+    window.addEventListener('resize', () => {
+        // هنگام تغییر اندازه صفحه، تمام پاسخ‌ها را ببند
+        closeAllFaqAnswers();
+
+        // اگر می‌خواهید بعد از بستن، دوباره ارتفاع‌ها را محاسبه کنید (اختیاری و پیچیده‌تر)
+        // faqItems.forEach(item => {
+        //     const answer = item.querySelector('.faq-answer');
+        //     if (item.classList.contains('open')) { // اگر قبلا باز بوده
+        //         // تنظیم max-height بر اساس ارتفاع واقعی محتوا بعد از تغییر اندازه
+        //         answer.style.maxHeight = answer.scrollHeight + 'px';
+        //     }
+        // });
+    });
+});
+    </script>
+</body>
+</html>

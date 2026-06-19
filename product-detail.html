@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جستجوی محصولات</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Font Awesome for icons */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .search-container {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            flex-grow: 1; /* Take available space */
+            margin-right: 20px; /* Space between search and filter */
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 45px 12px 15px; /* Space for filter icon */
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        .filter-icon {
+            position: absolute;
+            right: 15px; /* Position the icon inside the search box */
+            font-size: 20px;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .filter-icon:hover {
+            color: #007bff;
+        }
+
+        .filter-menu {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            min-width: 250px;
+            z-index: 1000;
+            margin-top: 5px;
+        }
+
+        .filter-menu.active {
+            display: block;
+        }
+
+        .filter-menu h4 {
+            margin-top: 0;
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .price-filter {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .price-filter label {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .price-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .apply-filters-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .apply-filters-button:hover {
+            background-color: #0056b3;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* چیدمان واکنش‌گرا */
+            gap: 30px; /* فاصله بین محصولات */
+            padding: 20px 0;
+        }
+
+        /* Existing Product Card Styles (assuming they are similar to your example) */
+        .product-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px; /* Added for spacing below each card when they appear */
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto; /* ارتفاع ثابت برای عکس */
+            /*object-fit: cover; /* پوشش کامل فضا بدون تغییر نسبت تصویر */
+            display: block; /* حذف فضای اضافی زیر عکس */
+        }
+
+        .product-info {
+            padding: 20px;
+            /*flex-grow: 1;
+            display: flex;
+            flex-direction: column;*/
+        }
+
+        .product-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .product-code {
+            font-size: 0.95em;
+            background: #eee;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: inline-block;
+            color: #555;
+        }
+
+        .product-price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--accent-pink); /* رنگ صورتی برای قیمت */
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            font-size: 0.95em;
+            color:rgb(43, 48, 54);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            /* نمایش حداکثر 3 خط با ... */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .details-button {
+            display: block; /* برای اینکه دکمه عرض کامل بگیرد */
+            width: 100%;
+            padding: 12px 20px;
+            background-color: var(--secondary-blue); /* رنگ آبی */
+            color: white;
+            border: none;
+            border-radius: 30px; /* شکل کپسولی */
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-decoration: none; /* حذف خط زیر لینک */
+        }
+
+        .details-button:hover {
+            background-color: #1976d2; /* آبی تیره‌تر */
+            transform: translateY(-3px);
+        }
+
+        .no-results {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-top: 50px;
+            display: none; /* Hidden by default */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 100%;
+            }
+            .filter-menu {
+                width: 100%;
+                right: 0;
+                left: 0;
+                min-width: unset;
+            }
+            .products-grid {
+                grid-template-columns: 1fr; /* Stack products on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="جستجو در بین ساعت‌ها...">
+            <i class="fas fa-filter filter-icon" id="filterIcon"></i>
+        </div>
+        <div class="filter-menu" id="filterMenu">
+            <h4>فیلتر قیمت</h4>
+            <div class="price-filter">
+                <input type="range" class="price-range-slider" id="priceRange" min="0" max="5000000" step="50000" value="5000000">
+                <div class="price-values">
+                    <span id="minPrice">0</span> تومان - <span id="maxPrice">5,000,000</span> تومان
+                </div>
+            </div>
+            <button class="apply-filters-button" id="applyFiltersBtn">اعمال فیلتر</button>
+        </div>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+        <!-- Product cards will be loaded here by JavaScript -->
+    </div>
+
+    <div class="no-results" id="noResultsMessage">
+        موردی یافت نشد.
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const productsGrid = document.getElementById('productsGrid');
+            const filterIcon = document.getElementById('filterIcon');
+            const filterMenu = document.getElementById('filterMenu');
+            const priceRange = document.getElementById('priceRange');
+            const minPriceDisplay = document.getElementById('minPrice');
+            const maxPriceDisplay = document.getElementById('maxPrice');
+            const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+
+            let allProducts = [];
+            let currentSearchTerm = '';
+            let currentMaxPrice = 5000000; // Default max price
+
+            // --- Helper Functions ---
+
+            // Function to format price (e.g., 1,000,000)
+            function formatPrice(price) {
+                return String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // Function to convert Persian price string to number
+            function parsePersianPrice(priceString) {
+                if (!priceString) return 0;
+                return parseInt(priceString.replace(/[^\d]/g, ''), 10) || 0;
+            }
+
+            // Function to display products
+            function displayProducts(products) {
+                productsGrid.innerHTML = ''; // Clear existing products
+                if (products.length === 0) {
+                    noResultsMessage.style.display = 'block';
+                } else {
+                    noResultsMessage.style.display = 'none';
+                    products.forEach((product, index) => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'product-card';
+                        // Using index for --i CSS variable if needed by your existing CSS, otherwise can be removed.
+                        // productCard.style.setProperty('--i', index);
+
+                        // Ensure product.price is a string before parsing
+                        const priceNumeric = parsePersianPrice(product.price);
+
+                        // Check if product price is within the filtered range
+                        if (priceNumeric <= currentMaxPrice) {
+                            productCard.innerHTML = `
+                                <img src="${product.image_urls[0]}" alt="${product.name}" class="product-image">
+                                <div class="product-info">
+                                    <h3 class="product-name">${product.name}</h3>
+                                    <span class="product-code">کد: ${product.product_code}</span>
+                                    <p class="product-price">${product.price}</p>
+                                    <p class="product-description">
+                                        ${product.description}
+                                    </p>
+                                    <a href="watches.html?id=${product.id}" class="details-button">مشاهده جزئیات</a>
+                                </div>
+                            `;
+                            productsGrid.appendChild(productCard);
+                        }
+                    });
+                    // If after filtering, no products are shown, display the message
+                    if (productsGrid.children.length === 0) {
+                         noResultsMessage.style.display = 'block';
+                    }
+                }
+            }
+
+            // --- Event Listeners ---
+
+            // Fetch products from JSON on load
+            fetch('products.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    allProducts = data;
+                    // Add a placeholder for the Casio product based on your example
+                    const casioExample = {
+                        "id": "Casio",
+                        "name": "ساعت Casio", // Shortened name for display
+                        "price": "1,000,000 تومان",
+                        "description": "یک ساعت کلاسیک با طراحی مینیمال و بند چرمی باکیفیت. مناسب برای مجالس رسمی و روزمره.",
+                        "description_2": "آخرین تکنولوژی ساعت‌های هوشمند با قابلیت‌های کامل سلامتی و اتصال به موبایل. طراحی مدرن و امکانات بی‌نظیر.",
+                        "image_urls": ["images/Casio.jpg"], // Using only one image as per your product-card structure
+                        "specs": {
+                            "بند ساعت": "استیل ضد زنگ",
+                            "رنگ": "نقره ای",
+                            "رنگ داخل": " آبی",
+                            "مدل": "عقربه ای ; باطری خور",
+                            "رنگ بدنه": "ثابت",
+                            "جرم": "120 گرم",
+                            "مقاومت ": "ضد آب ",
+                            "موتور": "تک موتوره ",
+                            "مدل‌های انتخابی": "نقره ای",
+                            "موجودی انبار": "1 عدد"
+                        },
+                        "product_code": "RA-005",
+                        "keywords": ["کاسیو", "ساعت", "کلاسیک", "مینیمال", "چرمی", "مردانه", "زنانه", "مدل بالا", "RA-005"]
+                    };
+                    // Check if Casio product already exists, if not, add it
+                    if (!allProducts.some(p => p.id === casioExample.id)) {
+                        allProducts.unshift(casioExample); // Add to the beginning
+                    }
+                    displayProducts(allProducts); // Display all products initially
+                })
+                .catch(error => {
+                    console.error("Could not load products:", error);
+                    productsGrid.innerHTML = '<p style="color: red;">خطا در بارگذاری محصولات. لطفاً بعداً تلاش کنید.</p>';
+                });
+
+            // Search input event
+            searchInput.addEventListener('input', (e) => {
+                currentSearchTerm = e.target.value.toLowerCase();
+                filterAndDisplayProducts();
+            });
+
+            // Filter icon click to toggle menu
+            filterIcon.addEventListener('click', () => {
+                filterMenu.classList.toggle('active');
+            });
+
+            // Hide filter menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!filterMenu.contains(e.target) && !filterIcon.contains(e.target)) {
+                    filterMenu.classList.remove('active');
+                }
+            });
+
+            // Price range slider event
+            priceRange.addEventListener('input', (e) => {
+                currentMaxPrice = parseInt(e.target.value, 10);
+                minPriceDisplay.textContent = formatPrice(0); // Min price is fixed at 0
+                maxPriceDisplay.textContent = formatPrice(currentMaxPrice);
+            });
+
+            // Apply filters button click
+            applyFiltersBtn.addEventListener('click', () => {
+                filterAndDisplayProducts();
+                filterMenu.classList.remove('active'); // Close menu after applying
+            });
+
+            // Function to filter and display products based on search term and price
+            function filterAndDisplayProducts() {
+                const filteredProducts = allProducts.filter(product => {
+                    const searchTermMatch = product.name.toLowerCase().includes(currentSearchTerm) ||
+                                            product.product_code.toLowerCase().includes(currentSearchTerm) ||
+                                            (product.keywords && product.keywords.join(' ').toLowerCase().includes(currentSearchTerm));
+
+                    const priceNumeric = parsePersianPrice(product.price);
+                    const priceMatch = priceNumeric <= currentMaxPrice;
+
+                    return searchTermMatch && priceMatch;
+                });
+                displayProducts(filteredProducts);
+            }
+        });
+    </script>
+
+</body>
+</html>

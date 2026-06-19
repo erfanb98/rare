@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جزئیات محصول</title>
+    <link rel="stylesheet" href="style.css"> <!-- لینک به فایل CSS اصلی شما -->
+    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- آیکون‌ها -->
+</head>
+<body>
+
+    <div class="site-container">
+        <!-- بخش Header -->
+        <header class="main-header">
+            <div class="header-left">
+                <!-- آیکون منوی همبرگری -->
+                <div class="hamburger-menu">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <!-- منوی کناری (در ابتدا مخفی است) -->
+                <!-- در فایل index.html، بخش sidebar-menu -->
+                 <nav class="sidebar-menu">
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <!-- کلاس menu-item-has-arrow اضافه شد و فونت سایز حذف شد -->
+                         <li class="has-submenu menu-item-has-arrow">
+                            <a href="#products-section">محصولات
+                                <!-- فلش دستی اضافه شد -->
+                                 <span class="submenu-arrow">▼</span>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="productswatch.html">ساعت</a></li>
+                                    <li><a href="productsbracelet.html">دستبند</a></li>
+                                    <li><a href="productsnecklace.html">گردنبند</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="support.html">پشتیبانی</a></li>
+                            <li><a href="aboutus.html">درباره ما</a></li>
+                            <li><a href="terms.html">سوالات متداول </a></li>
+                        </ul>
+                    </nav>
+            </div>
+            <div class="header-center">
+    <div class="universal-search-container">
+        <input type="text" id="universalSearchInput" class="universal-search-input" placeholder="جستجو در محصولات...">
+        <div id="universalSearchSuggestions" class="universal-search-suggestions"></div>
+        <button id="universalSearchButton" class="universal-search-button">جستجو</button>
+    </div>
+</div>
+                        <div class="header-right">
+                <!-- لوگوی سایت -->
+                <div class="logo-container">
+                    <span class="logo-part2">Action</span><span class="logo-part1">Rare</span>
+                </div>
+                <!-- عکس پروفایل (پیج) -->
+                <div class="profile-picture-container">
+                    <img src="images/RareAction.jpg" alt= "عکس پروفایل" class="profile-picture">
+                </div>
+            </div>
+        </header>
+
+    <div class="product-detail-container">
+
+        <section class="product-gallery-section">
+        <div class="main-image-container">
+            <button id="prev-btn" class="nav-btn next">‹</button> <!-- دکمه قبلی -->
+            <img id="main-product-image" src="" alt="تصویر اصلی محصول" class="main-image">
+            <button id="next-btn" class="nav-btn prev">›</button> <!-- دکمه بعدی -->
+        </div>
+        <div class="thumbnail-slider-wrapper"> <!-- Wrapper برای کنترل اسکرول -->
+            <div class="thumbnail-slider">
+                <!-- تصاویر کوچک اینجا توسط جاوا اسکریپت قرار می‌گیرند -->
+            </div>
+        </div>
+    </section>
+
+        <!-- بخش اطلاعات محصول -->
+        <section class="product-info-section">
+            <div class="product-header">
+                <div>
+                    <div class="product-title-code-container">
+                        <h1 id="product-name" class="product-name"></h1>
+                        <span id="product-code" class="product-code"></span>
+                    </div>
+                    <p id="product-price" class="product-price"></p>
+                </div>
+            </div>
+
+            <p id="product-description" class="product-description-full"></p>
+            <p id="product-description_2" class="product-description-full_2"></p>
+
+            <div class="specs-section">
+                <h3>مشخصات فنی</h3>
+                <ul id="specs-list" class="specs-list">
+                    <!-- مشخصات اینجا توسط جاوا اسکریپت قرار می‌گیرند -->
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- دکمه بازگشت -->
+    <button id="return-button" class="return-button">بازگشت به صفحه قبل</button>
+    <p class="transition-text">هم اکنون می‌توانید به صفحه قبل برگردید.</p>
+
+    <!-- بخش فوتر -->
+        <footer class="main-footer">
+            <div class="footer-top-bar"></div> <!-- نوار بنفش بالای فوتر -->
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>درباره ما</h3>
+                    <p>Rare Action مجموعه‌ای از اکسسوری‌های خاص و منحصر به فرد.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>لینک‌های مفید</h3>
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <li><a href="index.html#explore-by-interest">محصولات</a></li>
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html#faq-section">سوالات متداول </a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>تماس با ما</h3>
+                    <p>ایمیل: info@rareaction.com</p>
+                    <p>تلفن: 021-12345678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Rare Action. تمامی حقوق محفوظ است.
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="products.js"></script>
+
+</body>
+</html>

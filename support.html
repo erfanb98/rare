@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rare Action - پشتیبانی </title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products.css">
+    <!-- فونت وزیر -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+
+<style>
+    .support-section {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    padding: 50px 25px;
+    margin: 40px 0;
+    border-radius: 14px;
+    text-align: center;
+    color: white;
+}
+
+.support-content {
+    max-width: 700px;
+    margin: auto;
+}
+
+.support-content h2 {
+    font-size: 2em;
+    margin-bottom: 15px; 
+    color: #ffffff;
+}
+
+.support-text {
+    font-size: 1.1em;
+    line-height: 1.8;
+    margin-bottom: 35px;
+    animation: fadeInFromTop 1s ease-out forwards; /* انیمیشن ورود */
+}
+
+.support-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.support-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1em;
+    transition: 0.3s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.support-btn img {
+    width: 26px;
+    height: 26px;
+    margin-left: 10px;
+}
+
+/* روبیکا */
+.rubika-btn {
+    background-color: #e64a19;
+}
+.rubika-btn:hover {
+    background-color: #bf3d15;
+}
+
+/* تلگرام */
+.telegram-btn {
+    background-color: #0088cc;
+}
+.telegram-btn:hover {
+    background-color: #0077b3;
+}
+
+</style>
+</head>
+
+<body>
+    <div class="site-container">
+
+        <!-- ===== Header (بدون تغییر) ===== -->
+        <header class="main-header">
+            <div class="header-left">
+                <div class="hamburger-menu">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+
+                        <li class="has-submenu menu-item-has-arrow">
+                            <a href="#products-section">
+                                محصولات
+                                <span class="submenu-arrow">▼</span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="productswatch.html">ساعت</a></li>
+                                <li><a href="productsbracelet.html">دستبند</a></li>
+                                <li><a href="productsnecklace.html">گردنبند</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html">سوالات متداول </a></li>
+                    </ul>
+                </nav>
+            </div>
+
+         <div class="header-center">
+    <div class="universal-search-container">
+        <input type="text" id="universalSearchInput" class="universal-search-input" placeholder="جستجو در محصولات...">
+        <div id="universalSearchSuggestions" class="universal-search-suggestions"></div>
+        <button id="universalSearchButton" class="universal-search-button">جستجو</button>
+    </div>
+</div>
+                        <div class="header-right">
+                <!-- لوگوی سایت -->
+                <div class="logo-container">
+                    <span class="logo-part2">Action</span><span class="logo-part1">Rare</span>
+                </div>
+                <!-- عکس پروفایل (پیج) -->
+                <div class="profile-picture-container">
+                    <img src="images/RareAction.jpg" alt= "عکس پروفایل" class="profile-picture">
+                </div>
+            </div>
+        </header>
+
+        <section class="support-section">
+    <div class="support-content">
+        <h2>پشتیبانی </h2>
+        <p class="support-text">
+            برای ارتباط سریع با پشتیبانی می‌توانید از طریق روبیکا یا تلگرام پیام ارسال کنید.
+            تیم ما همیشه آماده پاسخ‌گویی است.
+        </p>
+
+        <div class="support-buttons">
+            <!-- روبیکا -->
+            <a href="#" class="support-btn rubika-btn">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI AAAACACAIAAABtZK0qAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFR0lEQVR4nO3dS4gdVRzH8Z8pJAEkwQIkIQSMMh0KgYiCgoRCZ9EVIjFkOy1B4n1nsaMZtG2NhbbX5OYwY9e+9MzOzszM7szO3N/8uJ7fHk9nPvPc977nvet9+9973vfOc55z3ndlcDnADHADHADHADHADHALnz7PF8W2v4C5Y1aiL6zU9nxXlL6Uw6Tu8o3H9RqutPG6XLOg2XrkQ7bU85E3LbU8qk7EzaGkS2rYtk8pkrO+TS6dxZ0s2gnFttI0hZxy6tzFkmyexPG6M4Vt8Gg6ceJNs7Hkhl8l7DzsTGvGE7k80qhN2q2Ts+Xy27N45F7nMx28hz7kZ7m8mU2XoG2ceIt2mcd0uadkyO0cl0psa27syhcsY0l3adgshZzO4Y1l8k2MQ8qk5t8Yg6cojsk3aZk4Zs6lYzvZRp2pZs9o2P3hA7bYtl8pM92cjjk3bpkM2Zs6lYtrYts8oE9l7M4Rs68kU6dck8qc1OcE1u8Y4e04pU7u8wYpU7d8Y427d0Y5Z89kxsY5V87ktscZF67E4Z4h27s0Z4h47M0Y4Rh48kU6Vck8p8xOclm7Q42sYo07d8Y0Z79kR7ZYtg8pU9mcg92s0Y49Y4s4Z4470Q7Zotg8qc9nch12k0Y49o0sYZ4x70w7ZItg8ps8ncB22k0Y4do0cYZ4R7ww7ZIpg8p88ncC12E0Y4dc0cYZ4R78w7ZIpg8pc8HcB01E0Y49U0cYZ4478w7ZIpg8o88HcAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA6I8ff3+BBgA2oJkVwAAAAASUVORK5CYII=">
+                روبیکا
+            </a>
+
+            <!-- تلگرام -->
+            <a href="#" class="support-btn telegram-btn">
+                <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGc+PHBhdGggZD0iTTI1NiAwQzExNC42IDAgMCAxMTQuNiAwIDI1NnMxMTQuNiAyNTYgMjU2IDI1NiAyNTYtMTE0LjYgMjU2LTI1NlMzOTcuNCAwIDI1NiAwem0xMjEuNiAxNjMuOGwtMzkuNCAxODUuN2MtMi44IDEyLjctMTAuNCAxNS44LTIxLjEgOS45bC02NS43LTQ4LjctMzEuNyAyOS42Yy0zLjUgMy41LTYuNCA2LjQtMTMgNi40bDQuNy02Ni45IDc0LjUtNjcuNmM1LjItNC40LTEuMS02LjgtOC4xLTQuNGwtMTg0LjEgNzEuNS02My40LTIwYy0xMy44LTQuMy0xNC0xMy44IDMuMSAyMS4ybDEwMy4zIDczLjcgMTEyLjctNzEuMWMxMC41LTYuNyAyMC4zLTIuOCAyMy4zIDkuN3oiIGZpbGw9IiNmZmYiLz48L2c+PC9zdmc+" >
+                تلگرام
+            </a>
+        </div>
+    </div>
+</section>
+
+        <!-- ===== Footer (بدون تغییر) ===== -->
+        <footer class="main-footer">
+            <div class="footer-top-bar"></div>
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>درباره ما</h3>
+                    <p>Rare Action مجموعه‌ای از اکسسوری‌های خاص و منحصر به فرد.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>لینک‌های مفید</h3>
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <li><a href="index.html#explore-by-interest">محصولات</a></li>
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html#faq-section">سوالات متداول </a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>تماس با ما</h3>
+                    <p>ایمیل: info@rareaction.com</p>
+                    <p>تلفن: 021-12345678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Rare Action. تمامی حقوق محفوظ است.
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

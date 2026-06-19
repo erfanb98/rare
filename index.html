@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rare Action - خانه </title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products.css">
+    <!-- برای فونت وزیر -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+    /* --- استایل‌های اختصاصی صفحه ساعت‌ها --- */
+        .watches-page-container {
+            padding: 40px 20px;
+            background-color: var(--background-light); /* پس‌زمینه روشن */
+        }
+
+        .watches-page-title {
+            text-align: center;
+            font-size: 2.8em;
+            color: var(--primary-purple); /* رنگ بنفش */
+            margin-bottom: 40px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .watches-page-title::after { /* خط زیر عنوان */
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--accent-pink); /* رنگ صورتی */
+            border-radius: 2px;
+        }
+
+        /* تعریف متغیرهای پیش‌فرض برای رنگ‌ها (در صورت عدم وجود) */
+:root {
+    --text-dark: #2c3e50;
+    --accent-pink: #e91e63;
+    -a-secondary-blue: #2196f3;
+    --bg-light-gray: #f4f4f4;
+    --text-gray: #777;
+}
+
+/* استایل اصلی گرید محصولات */
+.products-grid {
+    display: grid;
+    /*
+     * این خط اصلاح شده است:
+     * repeat(auto-fill, minmax(280px, 1fr)) به repeat(auto-fit, minmax(250px, 1fr)) تغییر یافته است.
+     * auto-fit به جای auto-fill باعث می‌شود که فضاهای خالی بین ستون‌ها پر شوند و ستون‌ها کش بیایند تا جا شوند.
+     * minmax(250px, 1fr) حداقل عرض را کمی کاهش داده تا در صفحات کوچک‌تر، فضای بیشتری برای دو ستون فراهم شود.
+     * همچنین، برای اطمینان از نمایش حداقل دو ستون در صفحات کوچکتر، یک Media Query اضافه شده است.
+     */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px; /* فاصله بین محصولات */
+    padding: 20px 0;
+}
+
+/* استایل کارت محصول */
+.product-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); /* سایه ملایم‌تر */
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInSlideUp 0.8s forwards ease-out;
+    animation-delay: calc(var(--i) * 0.15s); /* تاخیر کمتر برای انیمیشن روان‌تر */
+    display: flex; /* استفاده از flex برای کنترل بهتر چیدمان داخلی */
+    flex-direction: column; /* محتوا به صورت ستونی زیر هم */
+}
+
+.product-card:hover {
+    transform: translateY(-10px); /* بالا آمدن کمتر و ملایم‌تر */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* سایه کمی قوی‌تر */
+}
+
+/* عکس محصول */
+.product-image {
+    width: 100%;
+    /* ارتفاع ثابت حذف شده تا نسبت تصویر حفظ شود و با کوچک شدن کارت، تصویر هم کوچک شود */
+    /* height: 250px; */
+    aspect-ratio: 1 / 1; /* نسبت تصویر مربع (می‌توانید 4/3 یا 16/9 را هم استفاده کنید) */
+    object-fit: cover;
+    display: block;
+}
+
+/* اطلاعات محصول */
+.product-info {
+    padding: 15px; /* padding کمی کمتر شده */
+    flex-grow: 1; /* فضای خالی باقیمانده را پر کند */
+    display: flex;
+    flex-direction: column;
+}
+
+/* نام محصول */
+.product-name {
+    font-size: clamp(0.5em, 3vw, 1.4em); /* فونت واکنش‌گرا */
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 5px; /* فاصله کمتر */
+}
+
+/* کد محصول */
+.product-code_2 {
+    font-size: clamp(0.8em, 2.5vw, 0.95em); /* فونت واکنش‌گرا */
+    background: var(--bg-light-gray); /* استفاده از متغیر */
+    padding: 3px 8px;
+    border-radius: 8px;
+    margin-bottom: 10px; /* فاصله کمتر */
+    display: inline-block;
+    color: var(--text-gray); /* استفاده از متغیر */
+}
+
+/* قیمت محصول */
+.product-price_2 {
+    font-size: clamp(1em, 3vw, 1.2em); /* فونت واکنش‌گرا */
+    font-weight: bold;
+    color: var(--accent-pink);
+    margin-top: auto; /* قیمت را به پایین‌ترین نقطه اطلاعات محصول می‌برد */
+    margin-bottom: 10px;
+}
+
+/* توضیحات محصول */
+.product-description {
+    font-size: clamp(0.85em, 2.5vw, 0.95em); /* فونت واکنش‌گرا */
+    color: rgb(43, 48, 54);
+    line-height: 1.5;
+    margin-bottom: 15px; /* کمی کمتر */
+    /* نمایش حداکثر 3 خط با ... */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* دکمه جزئیات */
+.details-button {
+    display: block;
+    width: 100%;
+    padding: clamp(10px, 2.5vw, 12px) 15px; /* padding واکنش‌گرا */
+    background-color: var(-a-secondary-blue);
+    color: white;
+    border: none;
+    border-radius: 25px; /* کمی گردتر */
+    font-size: clamp(1em, 3vw, 1.1em); /* فونت واکنش‌گرا */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    margin-top: auto; /* دکمه را به پایین‌ترین نقطه می‌برد */
+}
+
+.details-button:hover {
+    background-color: #1976d2;
+    transform: translateY(-3px);
+    color: #FFF;
+}
+
+/* انیمیشن fade-in & slide-up */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .products-grid {
+        /* در عرض‌های کمتر از 600 پیکسل، حداقل عرض هر آیتم را به 150 پیکسل کاهش می‌دهیم
+           تا بتوانیم دو آیتم را در کنار هم قرار دهیم.
+           شما می‌توانید این مقدار را بسته به نیازتان تنظیم کنید. */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px; /* کاهش فاصله در صفحات کوچک */
+    }
+    .product-card {
+        max-width: unset; /* حذف محدودیت عرض حداکثری در صفحات کوچک */
+    }
+}
+
+.product-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* سایه ملایم */
+    overflow: hidden; /* برای گرد نگه داشتن گوشه‌ها */
+    transition: transform 0.4s ease, box-shadow 0.4s ease; /* انیمیشن هنگام هاور */
+    opacity: 0; /* مخفی برای انیمیشن اولیه */
+    transform: translateY(30px); /* شروع از پایین‌تر */
+    animation: fadeInSlideUp 0.8s forwards ease-out; /* انیمیشن اولیه */
+    /* animation-delay: calc(var(--i) * 0.2s); */ /* این خط را فعلا کامنت کردم چون --i باید در HTML تعریف شود */
+    /* max-width: 300px; */ /* این خط را حذف کردم تا در media query کنترل شود */
+}
+
+.product-card:hover {
+    transform: translateY(-24px); /* کمی بالا آمدن */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* سایه قوی‌تر */
+}
+
+.product-image {
+    width: 100%;
+    height: 250px; /* ارتفاع ثابت برای عکس */
+    object-fit: cover; /* پوشش کامل فضا بدون تغییر نسبت تصویر */
+    display: block; /* حذف فضای اضافی زیر عکس */
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-name {
+    font-size: 1.4em;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+.product-code_2 {
+    font-size: 0.95em;
+    background: #eee;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: inline-block;
+    color: #555;
+}
+
+.product-price_2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--accent-pink); /* رنگ صورتی برای قیمت */
+    margin-bottom: 15px;
+}
+
+.product-description {
+    font-size: 0.95em;
+    color:rgb(43, 48, 54);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    /* نمایش حداکثر 3 خط با ... */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.details-button {
+    display: block; /* برای اینکه دکمه عرض کامل بگیرد */
+    width: 100%;
+    padding: 12px 20px;
+    background-color: var(--secondary-blue); /* رنگ آبی */
+    color: white;
+    border: none;
+    border-radius: 30px; /* شکل کپسولی */
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none; /* حذف خط زیر لینک */
+}
+
+.details-button:hover {
+    background-color: #1976d2; /* آبی تیره‌تر */
+    transform: translateY(-3px);
+    color: #FFF;
+}
+
+/* انیمیشن fade-in & slide-up */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+</style>
+</head>
+<body>
+    <div class="site-container">
+        <!-- بخش Header -->
+        <header class="main-header">
+            <div class="header-left">
+                <!-- آیکون منوی همبرگری -->
+                <div class="hamburger-menu">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <!-- منوی کناری (در ابتدا مخفی است) -->
+                <!-- در فایل index.html، بخش sidebar-menu -->
+                 <nav class="sidebar-menu">
+                    <ul>
+                        <li><a href="#home">خانه</a></li>
+                        <!-- کلاس menu-item-has-arrow اضافه شد و فونت سایز حذف شد -->
+                         <li class="has-submenu menu-item-has-arrow">
+                            <a href="#products-section">محصولات
+                                <!-- فلش دستی اضافه شد -->
+                                 <span class="submenu-arrow">▼</span>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="productswatch.html">ساعت</a></li>
+                                    <li><a href="productsbracelet.html">دستبند</a></li>
+                                    <li><a href="productsnecklace.html">گردنبند</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="support.html">پشتیبانی</a></li>
+                            <li><a href="aboutus.html">درباره ما</a></li>
+                             <li><a href="terms.html">سوالات متداول </a></li>
+                        </ul>
+                    </nav>
+            </div>
+            <div class="header-center">
+    <div class="universal-search-container">
+        <input type="text" id="universalSearchInput" class="universal-search-input" placeholder="جستجو در محصولات...">
+        <div id="universalSearchSuggestions" class="universal-search-suggestions"></div>
+        <button id="universalSearchButton" class="universal-search-button">جستجو</button>
+    </div>
+</div>
+
+
+            <div class="header-right">
+                <!-- لوگوی سایت -->
+                <div class="logo-container">
+                    <span class="logo-part2">Action</span><span class="logo-part1">Rare</span>
+                </div>
+                <!-- عکس پروفایل (پیج) -->
+                <div class="profile-picture-container">
+                    <img src="images/RareAction.jpg" alt= "عکس پروفایل" class="profile-picture">
+                </div>
+            </div>
+
+        </header>
+
+        <!-- بخش Hero Section (زیر هدر) -->
+        <section class="hero-section" id="home">
+            <div class="hero-background"></div>
+            <div class="hero-content">
+                <h1>کشف کنید، متفاوت باشید.</h1>
+                <p>تجربه‌ای منحصر به فرد در دنیای اکسسوری‌های خاص. از ما بهترین‌ها را بخواهید.</p>
+                <!-- دکمه تغییر یافته -->
+                <a href="#explore-by-interest" class="cta-button-custom">کشف کلکسیون</a>
+            </div>
+        </section>
+
+        <!-- بخش کاوش بر اساس علاقه -->
+<section id="explore-by-interest" class="explore-section">
+    <h2>کاوش بر اساس علاقه</h2>
+    <div class="explore-categories">
+        <div class="category-item" data-category="watches">
+            <div class="image-wrapper">
+                <a href="productswatch.html">
+                    <img src="images/watchs.jpg" alt="ساعت">
+                </a>
+            </div>
+            <h3>ساعت</h3>
+        </div>
+
+        <div class="category-item" data-category="bracelets">
+            <div class="image-wrapper">
+                <a href="productsbracelet.html">
+                    <img src="images/Bracelets2.jpg" alt="دستبند">
+                </a>
+            </div>
+            <h3>دستبند</h3>
+        </div>
+
+        <div class="category-item" data-category="necklaces">
+            <div class="image-wrapper">
+                <a href="productsnecklace.html">
+                    <img src="images/forher.jpg" alt="گردنبند">
+                </a>
+            </div>
+            <h3>گردنبند</h3>
+        </div>
+    </div>
+</section>
+
+        <main class="watches-page-container">
+            <h1 class="watches-page-title">محصولات ویژه</h1>
+
+            <div class="products-grid">
+                <!-- محصول 1 -->
+                <div class="product-card" style="--i: 0;">
+                    <img src="images/RareAction.jpg" alt="ساعت مدل A" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">ساعت کلاسیک مدل A</h3>
+                        <span class="product-code_2">کد: RA-5501</span>
+                        <p class="product-price_2">12,500,000 تومان</p>
+                        <p class="product-description">
+                            یک ساعت کلاسیک با طراحی مینیمال و بند چرمی باکیفیت. مناسب برای مجالس رسمی و روزمره.
+                        </p>
+                        <a href="watches.html?id=watch-smart-new" class="details-button">مشاهده جزئیات</a>
+                    </div>
+                </div>
+
+                <!-- محصول 2 -->
+                <div class="product-card" style="--i: 1;">
+                    <img src="images/w1.jpg" alt="ساعت مدل B" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">ساعت اسپرت مدل B</h3>
+                        <span class="product-code_2">کد: RA-5501</span>
+                        <p class="product-price_2">12,500,000 تومان</p>
+                        <p class="product-description">
+                            ساعت اسپرت با بدنه استیل ضد زنگ و قابلیت ضد آب. ایده‌آل برای فعالیت‌های ورزشی و ماجراجویی.
+                        </p>
+                        <a href="watches.html" class="details-button">مشاهده جزئیات</a>
+                    </div>
+                </div>
+
+                <!-- محصول 3 -->
+                <div class="product-card" style="--i: 2;">
+                    <img src="images/w2.jpg" alt="ساعت مدل C" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">ساعت لوکس مدل C</h3>
+                        <span class="product-code_2">کد: RA-5501</span>
+                        <p class="product-price_2">12,500,000 تومان</p>
+                        <p class="product-description">
+                            طراحی لوکس با عقربه‌های برجسته و سنگ‌های قیمتی تزئینی. نمادی از ظرافت و تجمل.
+                        </p>
+                        <a href="/product/watch-c-details" class="details-button">مشاهده جزئیات</a>
+                    </div>
+                </div>
+
+                <!-- می‌توانید محصولات بیشتری به همین شکل اضافه کنید -->
+
+            </div>
+        </main>
+
+        <!-- بخش داستان ما -->
+        <section id="about-us" class="about-section">
+            <h2>داستان ما</h2>
+            <p>
+                در Rare Action، ما باور داریم که هر قطعه اکسسوری داستانی برای گفتن دارد. از طراحی‌های جسورانه تا انتخاب دقیق متریال، ما به دنبال خلق محصولاتی هستیم که نه تنها زیبا، بلکه الهام‌بخش نیز باشند. ما اینجا هستیم تا به شما کمک کنیم تا بهترین‌ها را کشف کنید و استایل منحصر به فرد خود را بسازید.
+            </p>
+        </section>
+
+        <!-- بخش فوتر -->
+        <footer class="main-footer">
+            <div class="footer-top-bar"></div> <!-- نوار بنفش بالای فوتر -->
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>درباره ما</h3>
+                    <p>Rare Action مجموعه‌ای از اکسسوری‌های خاص و منحصر به فرد.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>لینک‌های مفید</h3>
+                    <ul>
+                        <li><a href="#home">خانه</a></li>
+                        <li><a href="#explore-by-interest">محصولات</a></li>
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html#faq-section">سوالات متداول </a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>تماس با ما</h3>
+                    <p>ایمیل: info@rareaction.com</p>
+                    <p>تلفن: 09373369219 </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Rare Action. تمامی حقوق محفوظ است.
+            </div>
+        </footer>
+    </div>
+
+    <!-- جاوا اسکریپت -->
+    <script src="script.js"></script>
+</body>
+</html>

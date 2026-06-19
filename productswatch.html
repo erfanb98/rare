@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rare Action - محصولات ساعت </title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products.css">
+    <!-- برای فونت وزیر -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+    /* --- استایل‌های اختصاصی صفحه ساعت‌ها --- */  
+        .watches-page-container {
+            padding: 10px 5px;
+            background-color: var(--background-light); /* پس‌زمینه روشن */
+        }
+
+        .watches-page-title {
+            text-align: center;
+            font-size: 2.8em;
+            color: var(--primary-purple); /* رنگ بنفش */
+            margin-bottom: 40px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .watches-page-title::after { /* خط زیر عنوان */
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--accent-pink); /* رنگ صورتی */
+            border-radius: 2px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* چیدمان واکنش‌گرا */
+            gap: 30px; /* فاصله بین محصولات */
+            padding: 20px 0;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* سایه ملایم */
+            overflow: hidden; /* برای گرد نگه داشتن گوشه‌ها */
+            transition: transform 0.4s ease, box-shadow 0.4s ease; /* انیمیشن هنگام هاور */
+            opacity: 0; /* مخفی برای انیمیشن اولیه */
+            transform: translateY(30px); /* شروع از پایین‌تر */
+            animation: fadeInSlideUp 0.8s forwards ease-out; /* انیمیشن اولیه */
+            animation-delay: calc(var(--i) * 0.2s); /* تاخیر متغیر برای هر محصول */
+        }
+
+        .product-card:hover {
+            transform: translateY(-24px); /* کمی بالا آمدن */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* سایه قوی‌تر */
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto; /* ارتفاع ثابت برای عکس */
+            /*object-fit: contain; /* پوشش کامل فضا بدون تغییر نسبت تصویر */
+            display: block; /* حذف فضای اضافی زیر عکس */
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        .product-code {
+            font-size: 0.95em;
+            background: #eee;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: inline-block;
+            color: #555;
+        }
+
+        .product-price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--accent-pink); /* رنگ صورتی برای قیمت */
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            font-size: 0.95em;
+            color:rgb(43, 48, 54);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            /* نمایش حداکثر 3 خط با ... */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .details-button {
+            display: block; /* برای اینکه دکمه عرض کامل بگیرد */
+            width: 100%;
+            padding: 12px 20px;
+            background-color: var(--secondary-blue); /* رنگ آبی */
+            color: white;
+            border: none;
+            border-radius: 30px; /* شکل کپسولی */
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-decoration: none; /* حذف خط زیر لینک */
+        }
+
+        .details-button:hover {
+            background-color: #1976d2; /* آبی تیره‌تر */
+            transform: translateY(-3px);
+        }
+
+        /* انیمیشن fade-in & slide-up */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+</style>
+</head>
+<body>
+    <div class="site-container">
+        <!-- بخش Header -->
+        <header class="main-header">
+            <div class="header-left">
+                <!-- آیکون منوی همبرگری -->
+                <div class="hamburger-menu">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <!-- منوی کناری (در ابتدا مخفی است) -->
+                <!-- در فایل index.html، بخش sidebar-menu -->
+                 <nav class="sidebar-menu">
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <!-- کلاس menu-item-has-arrow اضافه شد و فونت سایز حذف شد -->
+                         <li class="has-submenu menu-item-has-arrow">
+                            <a href="#products-section">محصولات
+                                <!-- فلش دستی اضافه شد -->
+                                 <span class="submenu-arrow">▼</span>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="productswatch.html">ساعت</a></li>
+                                    <li><a href="productsbracelet.html">دستبند</a></li>
+                                    <li><a href="productsnecklace.html">گردنبند</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="support.html">پشتیبانی</a></li>
+                            <li><a href="aboutus.html">درباره ما</a></li>
+                            <li><a href="terms.html">سوالات متداول </a></li>
+                        </ul>
+                    </nav>
+            </div>
+
+            <div class="header-center">
+    <div class="universal-search-container">
+        <input type="text" id="universalSearchInput" class="universal-search-input" placeholder="جستجو در محصولات...">
+        <div id="universalSearchSuggestions" class="universal-search-suggestions"></div>
+        <button id="universalSearchButton" class="universal-search-button">جستجو</button>
+    </div>
+</div>
+
+            <div class="header-right">
+                <!-- لوگوی سایت -->
+                <div class="logo-container">
+                    <span class="logo-part2">Action</span><span class="logo-part1">Rare</span>
+                </div>
+                <!-- عکس پروفایل (پیج) -->
+                <div class="profile-picture-container">
+                    <img src="images/RareAction.jpg" alt= "عکس پروفایل" class="profile-picture">
+                </div>
+            </div>
+
+        </header>
+
+        <!-- بخش Hero Section (زیر هدر) -->
+        <!-- بخش صفحه ساعت‌ها -->
+        <main class="watches-page-container">
+            <h1 class="watches-page-title">بخش ساعت ها</h1>
+
+            <div class="products-grid">
+                <!-- محصول 1 -->
+                <div class="product-card" style="--i: 1;">
+                    <img src="images/casio-m blue.jpg" alt="ساعت مدل B" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">ساعت کاسیو مربعی  </h3>
+                        <span class="product-code">کد: RA-001</span>
+                        <p class="product-price">1,250,000 تومان</p>
+                        <p class="product-description">
+                            ساعت اسپرت با بدنه استیل ضد زنگ و قابلیت ضد آب. ایده‌آل برای فعالیت‌های ورزشی و ماجراجویی.
+                        </p>
+                        <a href="watches.html?id=casio-m blue" class="details-button">مشاهده جزئیات</a>
+                    </div>
+                </div>
+
+                <!-- محصول 2 -->
+                <div class="product-card" style="--i: 2;">
+                    <img src="images/watch-rolex.jpg" alt="ساعت مدل C" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">ساعت rolex  </h3>
+                        <span class="product-code">کد: RA-002</span>
+                        <p class="product-price">1,250,000 تومان</p>
+                        <p class="product-description">
+                            طراحی لوکس با عقربه‌های برجسته و سنگ‌های قیمتی تزئینی. نمادی از ظرافت و تجمل.
+                        </p>
+                        <a href="watches.html?id=watch-rolex" class="details-button">مشاهده جزئیات</a>
+                    </div>
+                </div>
+
+                <!-- محصول 3 -->
+                <div class="product-card" style="--i: 3;">
+                    <img src="images/watch-negini.jpg" alt="ساعت مدل D" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">ساعت Kanima</h3>
+                        <span class="product-code">کد: RA-003</span>
+                        <p class="product-price">1,489,00 تومان</p>
+                        <p class="product-description">
+                            پیشرفته‌ترین ساعت هوشمند با قابلیت‌های سلامتی، ورزشی و اتصال به گوشی هوشمند.
+                        </p>
+                        <a href="watches.html?id=watch-negini" class="details-button">مشاهده جزئیات</a>
+                    </div>
+                </div>
+
+                 <!-- محصول 4 -->
+                <div class="product-card" style="--i: 4;">
+                    <img src="images/citizen.jpg" alt="ساعت مدل E" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">ساعت Diluohao مدل جدید  </h3>
+                        <span class="product-code">کد: RA-004</span>
+                        <p class="product-price">1,350,000 تومان</p>
+                        <p class="product-description">
+                            طراحی ظریف و زنانه با جزئیات چشم‌نواز، مناسب برای استایل‌های روزمره و مجلسی بانوان.
+                        </p>
+                        <a href="watches.html?id=citizen" class="details-button">مشاهده جزئیات</a>
+                    </div>
+                </div>
+
+                <!-- محصول 5 -->
+                <div class="product-card" style="--i: 0;">
+                    <img src="images/casio-d.jpg" alt="ساعت مدل B" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">ساعت Casio  </h3>
+                        <span class="product-code">کد: RA-005</span>
+                        <p class="product-price">1,000,000 تومان</p>
+                        <p class="product-description">
+                            یک ساعت کلاسیک با طراحی مینیمال و بند چرمی باکیفیت. مناسب برای مجالس رسمی و روزمره.
+                        </p>
+                        <a href="watches.html?id=Casio" class="details-button">مشاهده جزئیات</a>
+                    </div>
+                </div>
+
+                <!-- می‌توانید محصولات بیشتری به همین شکل اضافه کنید -->
+
+            </div>
+        </main>
+        <!-- بخش فوتر -->
+        <footer class="main-footer">
+            <div class="footer-top-bar"></div> <!-- نوار بنفش بالای فوتر -->
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>درباره ما</h3>
+                    <p>Rare Action مجموعه‌ای از اکسسوری‌های خاص و منحصر به فرد.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>لینک‌های مفید</h3>
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <li><a href="index.html#explore-by-interest">محصولات</a></li>
+                        <li><a href="support.html">پشتیبانی</a></li>
+                        <li><a href="aboutus.html">درباره ما</a></li>
+                        <li><a href="terms.html#faq-section">سوالات متداول </a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>تماس با ما</h3>
+                    <p>ایمیل: info@rareaction.com</p>
+                    <p>تلفن: 021-12345678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Rare Action. تمامی حقوق محفوظ است.
+            </div>
+        </footer>
+    </div>
+
+    <!-- جاوا اسکریپت -->
+    <script src="script.js"></script>
+    <script>
+        // --- جاوا اسکریپت برای انیمیشن محصولات ---
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const cards = entry.target.querySelectorAll('.product-card');
+                        cards.forEach((card, index) => {
+                            card.style.setProperty('--i', index); // تنظیم تاخیر انیمیشن
+                            card.style.animation = `fadeInSlideUp 0.8s forwards ease-out ${index * 0.2}s`;
+                        });
+                        // observer.unobserve(entry.target); // اگر فقط یک بار انیمیشن اجرا شود
+                    }
+                });
+            }, { threshold: 0.1 }); // زمانی که 10% از کارت‌ها دیده شوند
+
+            observer.observe(document.querySelector('.products-grid'));
+        });
+    </script>
+</body>
+</html>
